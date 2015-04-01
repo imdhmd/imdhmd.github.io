@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<title>0443R AI S0ICA</title>
+		<style type="text/css">
+			div.content {
+				display: table;
+				margin: auto;
+			}
+			p {
+				border-radius: 10px;
+				padding: 10px;
+				line-height: 20px;
+				font-size: 12pt;
+				font-family: "Times New Roman", Georgia, Serif;
+			}
+			div.offer {
+			    margin-left: -100px;
+			    margin-right: 80px;
+			    width: 300px;
+			}
+			div.user,
+			div.que {
+			    margin-right: -100px;
+			    margin-left: 80px;
+			    width: 300px;
+			}
+			div.offer p {
+				background: #cfcfcf;
+				color: #6f6f6f;
+			}
+			div.user p {
+				background: #ececec;
+				color: #8f8f8f;
+			}
+			input {
+				width: 100%;
+				border: 1px solid #bfbfbf;
+				background: #ececec;
+				padding: 8px;
+				color: #8f8f8f;
+				border-radius: 10px;
+				line-height: 20px;
+				font-size: 12pt;
+				font-family: "Times New Roman", Georgia, Serif;
+			}
+			input:focus{
+			    outline: 0;
+			}
+		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+		<script type="text/javascript">
+			var questionNo = 0;
+			var offer = {
+				says: function(text) {
+					$(".content").append("<div class='offer'><p>" + text + "</p></div>")
+				},
+
+				listens: function() {
+					questionNo = questionNo + 1
+					$(".content").append("<div class='que'><input type='text' id='que"+questionNo+"'/></div>")
+					var qBox = $("#que" + questionNo)
+					qBox.focus()
+					qBox.keyup(function(e){
+						if (e.keyCode == 13) {
+							offer.answers(qBox.val())
+							qBox.remove()
+						}
+					})
+				},
+
+				answers: function(que) {
+					$(".content").append("<div class='user'><p>" + que + "</p></div>")
+					var myAns = "Today is - " + $.datepicker.formatDate('DD, d MM, yy', new Date()) + ".<br/>How else can i help you?"
+					if (que.indexOf("date") != -1) {
+						offer.says(myAns)
+					} else {
+						offer.says("Looks like you meant to ask the date. <br/>" + myAns)
+					}
+					offer.listens()
+				}
+			}
+
+			$(document).ready(function(){
+				offer.says("Hey! So how can i help you?")
+				offer.listens()
+			})
+		</script>
+	</head>
+	<body>
+		<div class="content"></div>
+	</body>
+</html>
